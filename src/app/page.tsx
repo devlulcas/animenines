@@ -1,91 +1,80 @@
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from './page.module.css'
+import { Inter } from "@next/font/google";
+import Image from "next/image";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+// Server component
+export default async function Home() {
+  const result = await getTopAnimes();
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <main>
+      <h1>Homepage</h1>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
+      {result.map((anime) => (
+        <article key={anime.id}>
+          <h2>
+            {anime.title} - {anime.japaneseTitle}
           </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
+          <Image
+            src={anime.images.large}
+            alt={anime.title}
+            width={300}
+            height={300}
+          />
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+          <p>{anime.synopsis}</p>
+        </article>
+      ))}
     </main>
-  )
+  );
+}
+
+interface AnimeResponseDTO {
+  mal_id: number;
+  title: string;
+  title_japanese: string;
+  images: {
+    webp: {
+      image_url: string;
+      large_image_url: string;
+    };
+  };
+  episodes: number;
+  synopsis: string;
+}
+
+interface Anime {
+  id: number;
+  title: string;
+  japaneseTitle: string;
+  images: {
+    large: string;
+    tiny: string;
+  };
+  episodes: number;
+  synopsis: string;
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API;
+
+async function getTopAnimes(): Promise<Anime[]> {
+  const response = await fetch(`${API_URL}/top/anime`);
+
+  const json = await response.json();
+
+  const result = json as { data: AnimeResponseDTO[] };
+
+  return result.data.map((anime) => ({
+    id: anime.mal_id,
+    title: anime.title,
+    japaneseTitle: anime.title_japanese,
+    images: {
+      large: anime.images.webp.large_image_url,
+      tiny: anime.images.webp.image_url,
+    },
+    episodes: anime.episodes,
+    synopsis: anime.synopsis,
+  }));
 }
