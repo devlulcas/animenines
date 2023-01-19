@@ -1,3 +1,4 @@
+import { AnimeCard } from "@/components/anime-card";
 import { Inter } from "@next/font/google";
 import Image from "next/image";
 
@@ -11,22 +12,31 @@ export default async function Home() {
     <main>
       <h1>Homepage</h1>
 
-      {result.map((anime) => (
-        <article key={anime.id}>
-          <h2>
-            {anime.title} - {anime.japaneseTitle}
-          </h2>
+      <AnimeCard />
 
-          <Image
-            src={anime.images.large}
-            alt={anime.title}
-            width={300}
-            height={300}
-          />
+      <ul className="grid grid-cols-5 p-2 gap-2">
+        {result.map((anime) => (
+          <li key={anime.id}>
+            <article className="flex-1 gap-1 bg-slate-900 text-slate-100 p-2 max-w-md rounded-md h-full">
+              <h2 className="text-lg">
+                {anime.title} - {anime.japaneseTitle}
+              </h2>
 
-          <p>{anime.synopsis}</p>
-        </article>
-      ))}
+              <Image
+                className="rounded-md aspect-square w-full object-cover"
+                src={anime.images.large}
+                alt={anime.title}
+                width={300}
+                height={300}
+              />
+
+              <p className="text-sm h-10 text-slate-400 overflow-y-hidden">
+                {anime.synopsis}
+              </p>
+            </article>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
