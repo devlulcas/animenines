@@ -1,3 +1,4 @@
+import { Header } from "@/components/header";
 import Link from "next/link";
 import "../styles/globals.css";
 
@@ -5,20 +6,12 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function RootLayout({
-  children,
-}: Props) {
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <head />
-      <body>
-        <header>
-          <nav>
-            <Link href="/">Homepage</Link>
-            <hr />
-            <Link href="/comments">Comments</Link>
-          </nav>
-        </header>
+      <body className="min-h-screen bg-gray-50">
+        <Header />
         <div>{children}</div>
       </body>
     </html>
