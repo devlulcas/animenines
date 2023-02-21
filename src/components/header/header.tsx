@@ -1,11 +1,12 @@
 import Link from "next/link";
+import css from "./header.module.css";
 
 export function Header() {
   return (
-    <header className="w-full p-1 bg-green-50 flex justify-center">
-      <nav className="flex gap-5">
-        <Link className="p-2 text-green-700 hover:text-green-900" href="/">Homepage</Link>
-        <Link className="p-2 text-green-700 hover:text-green-900" href="/comments">Comments</Link>
+    <header className="z-20 custom-full-bleed fixed top-0 w-full h-[var(--header-height)] flex justify-center items-center">
+      <nav className={css.header}>
+        <Link className="p-2 text-white hover:text-violet-300" href="/">Homepage</Link>
+        <Link className="p-2 text-white hover:text-violet-300" href="/comments">Comments</Link>
       </nav>
     </header>
   );

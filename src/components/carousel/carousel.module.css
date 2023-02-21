@@ -1,0 +1,8 @@
+.embla {
+  overflow: hidden;
+}
+
+.emblaContainer {
+  display: flex;
+  gap: 1rem;
+}

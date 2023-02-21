@@ -1,14 +1,4 @@
 import { AnimeCard } from "@/components/anime-card";
-import {
-  Anime,
-  AnimeResponseDTO,
-  isAnimeResponseDTO,
-  isAnimeResponseDTOArray,
-} from "@/types/anime";
-import { Inter } from "@next/font/google";
-import Image from "next/image";
-
-const inter = Inter({ subsets: ["latin"] });
 import { getTopAnimes } from "@/services/anime";
 
 // Server component
@@ -17,9 +7,9 @@ export default async function HomePage() {
 
   return (
     <main>
-      <h1>Homepage</h1>
+      <h1 className="text-4xl font-bold text-white">Homepage</h1>
 
-      <ul className="grid grid-cols-5 p-2 gap-2">
+      <ul className="grid grid-cols-3 p-2 gap-4">
         {result.map((anime) => (
           <li key={anime.id}>
             <AnimeCard anime={anime} />

@@ -38,7 +38,7 @@ export interface AnimeResponseDTO {
  * @returns Verdadeiro se o objeto for do tipo AnimeResponseDTO
  */
 export function isAnimeResponseDTO(
-  anime: unknown,
+  anime: unknown
 ): anime is APIWrapper<AnimeResponseDTO> {
   if (typeof anime !== "object" || anime === null) {
     return false;
@@ -56,7 +56,7 @@ export function isAnimeResponseDTO(
 }
 
 export function isAnimeResponseDTOArray(
-  anime: unknown,
+  anime: unknown
 ): anime is APIWrapper<AnimeResponseDTO[]> {
   if (typeof anime !== "object" || anime === null) {
     return false;

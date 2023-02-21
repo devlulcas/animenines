@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --header-height: 3rem;
+  scroll-padding-top: var(--header-height);
+}
+
+.custom-wrapper {
+  display: grid;
+  grid-template-columns: 1fr min(120ch, calc(100% - 10px)) 1fr;
+  grid-column-gap: 32px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.custom-wrapper > * {
+  grid-column: 2;
+}
+
+.custom-full-bleed {
+  width: 100%;
+  grid-column: 1 / -1;
+}
+
+* {
+  cursor: url(https://cur.cursors-4u.net/nature/nat-7/nat607.cur), auto !important;
+}
