@@ -1,16 +1,26 @@
 import { AnimeCharacterCard } from "@/components/anime-character-card";
 import { Carousel, Slide } from "@/components/carousel";
+import { Heading } from "@/components/title";
 import { getAnimeCharacters } from "@/services/characters";
 import { getAnimeEpisodes } from "@/services/episode";
 import { getFullAnime } from "@/services/full-anime";
 import clsx from "clsx";
 import Image from "next/image";
+import { Suspense } from "react";
 
 type AnimePageProps = {
   params: { id: string };
 };
 
 export default async function AnimePage({ params }: AnimePageProps) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <InnerAnimePage params={params} />
+    </Suspense>
+  );
+}
+
+async function InnerAnimePage({ params }: AnimePageProps) {
   const [anime, episodes, characters] = await Promise.all([
     getFullAnime(params.id),
     getAnimeEpisodes(params.id),
@@ -53,58 +63,67 @@ export default async function AnimePage({ params }: AnimePageProps) {
         </div>
       </div>
 
-      <section>
-        <h2 className="p-4 text-2xl font-bold text-white">Characters</h2>
+      {characters.length > 0 ? (
+        <section>
+          <Heading>Characters</Heading>
 
-        <Carousel>
-          {characters.map((character) => (
-            <Slide key={character.id}>
-              <AnimeCharacterCard character={character} />
-            </Slide>
-          ))}
-        </Carousel>
-      </section>
+          <Carousel>
+            {characters.map((character) => (
+              <Slide key={character.id}>
+                <AnimeCharacterCard character={character} />
+              </Slide>
+            ))}
+          </Carousel>
+        </section>
+      ) : null}
 
-      <section>
-        <h2 className="p-4 text-2xl font-bold text-white">Trailer</h2>
+      {anime.trailer.url ? (
+        <section>
+          <Heading>Trailer</Heading>
 
-        <div className="flex items-center justify-center w-full h-96 bg-gray-900">
-          <iframe
-            src={anime.trailer.embedUrl}
-            className="w-full h-full"
-            allowFullScreen
-          />
-        </div>
-      </section>
+          <div className="flex items-center justify-center w-full h-96 bg-gray-900">
+            <iframe
+              src={anime.trailer.embedUrl}
+              className="w-full h-full"
+              allowFullScreen
+            />
+          </div>
+        </section>
+      ) : null}
 
-      <section>
-        <h2 className="p-4 text-2xl font-bold text-white">Episodes</h2>
+      {episodes.length > 0 ? (
+        <section>
+          <Heading>Episodes</Heading>
 
-        <ul>
-          {episodes.map((episode) => (
-            <li className="flex items-center justify-between" key={episode.id}>
-              <a
-                className="w-full block p-4 text-lg font-medium bg-gray-50 text-gray-900 hover:bg-gray-100"
-                href={`/animes/${anime.id}/episodes/${episode.id}`}
+          <ul>
+            {episodes.map((episode) => (
+              <li
+                className="flex items-center justify-between"
+                key={episode.id}
               >
-                {episode.title}
-              </a>
+                <a
+                  className="w-full block p-4 text-lg font-medium bg-gray-50 text-gray-900 hover:bg-gray-100"
+                  href={`/animes/${anime.id}/episodes/${episode.id}`}
+                >
+                  {episode.title}
+                </a>
 
-              <p
-                className={clsx(
-                  {
-                    "bg-red-500": episode.filler,
-                    "bg-emerald-500": !episode.filler,
-                  },
-                  "h-full text-white p-4 text-lg font-medium w-24 text-center"
-                )}
-              >
-                {episode.filler ? "Filler" : "Canon"}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
+                <p
+                  className={clsx(
+                    {
+                      "bg-red-500": episode.filler,
+                      "bg-emerald-500": !episode.filler,
+                    },
+                    "h-full text-white p-4 text-lg font-medium w-24 text-center"
+                  )}
+                >
+                  {episode.filler ? "Filler" : "Canon"}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </div>
   );
 }
