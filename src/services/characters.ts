@@ -4,7 +4,11 @@ import { Character, isCharacterResponseDTOArray } from "@/types/character";
 export async function getAnimeCharacters(id: string): Promise<Character[]> {
   const malId = id.replace(/\D/g, "");
 
-  const response = await fetch(`${env.API_URL}/anime/${malId}/characters`);
+  const response = await fetch(`${env.API_URL}/anime/${malId}/characters`, {
+    next: {
+      revalidate: 60 * 15,
+    },
+  });
 
   const json = await response.json();
 

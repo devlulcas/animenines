@@ -5,7 +5,9 @@ export async function getFullAnime(id: string): Promise<FullAnime | null> {
   try {
     const malId = id.replace(/\D/g, "");
 
-    const response = await fetch(`${env.API_URL}/anime/${malId}/full`);
+    const response = await fetch(`${env.API_URL}/anime/${malId}/full`, {
+      cache: "no-cache",
+    });
 
     const json = await response.json();
 

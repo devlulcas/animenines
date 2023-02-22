@@ -4,7 +4,9 @@ import { Anime, isAnimeResponseDTOArray } from "@/types/anime";
 
 export async function getTopAnimes(): Promise<Anime[]> {
   try {
-    const response = await fetch(`${env.API_URL}/top/anime`);
+    const response = await fetch(`${env.API_URL}/top/anime`, {
+      cache: "no-cache",
+    });
 
     const json = await response.json();
 

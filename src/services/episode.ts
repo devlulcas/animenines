@@ -4,7 +4,11 @@ import { Episode, isEpisodeResponseDTOArray } from "@/types/episode";
 export async function getAnimeEpisodes(id: string): Promise<Episode[]> {
   const malId = id.replace(/\D/g, "");
 
-  const response = await fetch(`${env.API_URL}/anime/${malId}/episodes`);
+  const response = await fetch(`${env.API_URL}/anime/${malId}/episodes`, {
+    next: {
+      revalidate: 60 * 15,
+    },
+  });
 
   const json = await response.json();
 
