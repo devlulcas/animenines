@@ -6,21 +6,12 @@ import { getAnimeEpisodes } from "@/services/episode";
 import { getFullAnime } from "@/services/full-anime";
 import clsx from "clsx";
 import Image from "next/image";
-import { Suspense } from "react";
 
 type AnimePageProps = {
   params: { id: string };
 };
 
 export default async function AnimePage({ params }: AnimePageProps) {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <InnerAnimePage params={params} />
-    </Suspense>
-  );
-}
-
-async function InnerAnimePage({ params }: AnimePageProps) {
   const [anime, episodes, characters] = await Promise.all([
     getFullAnime(params.id),
     getAnimeEpisodes(params.id),

@@ -1,10 +1,16 @@
 .embla {
-  overflow: hidden;
+	overflow: hidden;
+	width: 100%;
+	position: relative;
+	padding: 0;
 }
 
 .emblaContainer {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: flex-start;
+	display: flex;
+}
+
+.emblaSlide {
+	flex: none;
+  margin-right: 1rem;
+	min-width: 0;
 }

@@ -16,5 +16,5 @@ export function Carousel({ children }: CarouselProps) {
 }
 
 export function Slide({ children }: CarouselProps) {
-  return <div className="flex-none min-w-0 cursor-grab">{children}</div>;
+  return <div className={css.emblaSlide}>{children}</div>;
 }
