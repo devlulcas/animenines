@@ -6,7 +6,13 @@ type CarouselProps = {
 };
 
 export function Carousel({ children }: CarouselProps) {
-  const [emblaRef] = useEmblaCarousel();
+  const [emblaRef] = useEmblaCarousel({
+    loop: true,
+    containScroll: "keepSnaps",
+    dragFree: true,
+  });
+
+
 
   return (
     <div className={css.embla} ref={emblaRef}>
